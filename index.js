@@ -38,7 +38,10 @@ async function search() {
         return item.title.toLowerCase().includes(input)
     })
     
-    document.getElementById('content').innerHTML = card(filteredData)
+    return new Promise((success, failed) => {
+        if(filteredData.length === 0) success(document.getElementById('content').innerHTML = 'artikel tidak ditemukan')
+        else success(document.getElementById('content').innerHTML = card(filteredData))
+    })
     
 }
 
