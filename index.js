@@ -15,34 +15,35 @@ function card(data) {
     return card;
 }
 
-async function search(value) {
-    const api = await fetch(`https://newsapi.org/v2/everything?q=${value}&apiKey=e171d2c395404c9cb49af54c89283081`)
+
+const searchInput = document.getElementById('search')
+
+async function getData() {
+    const api = await fetch('https://newsapi.org/v2/everything?q=bitcoin&apiKey=e171d2c395404c9cb49af54c89283081')
     const {articles} = await api.json()
+    
+    document.getElementById('content').innerHTML = card(articles)
+    return articles;
+    
+}
 
-    return new Promise((success, failed) => {
-        if(articles.length === 0) success(document.getElementById('content').innerHTML = 'artikel tidak ditemukan')
-        else success(document.getElementById('content').innerHTML = card(articles))
 
+async function search() {
+    const input = searchInput.value.toLowerCase();
+    const data = await getData();
+    console.log(data)
+    
+    const filteredData = data.filter(item => {
+        console.log(item)
+        return item.title.toLowerCase().includes(input)
     })
-}
-
-function userDisplay() {
     
-        async function getData() {
-            const api = await fetch('https://newsapi.org/v2/everything?q=bitcoin&apiKey=e171d2c395404c9cb49af54c89283081')
-            const {articles} = await api.json()
-
-            document.getElementById('content').innerHTML = card(articles)
-
-        }
-        
-        
-
-        getData()
+    document.getElementById('content').innerHTML = card(filteredData)
     
 }
-userDisplay()
 
+getData()
+searchInput.addEventListener('input', search)
 
 // let info;
 
